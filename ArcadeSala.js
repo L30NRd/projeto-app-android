@@ -20,13 +20,11 @@ export default function Arcade({ route }) {
   useEffect(() => {
     const fetchRoomInfo = async () => {
       try {
-        // Mudando a URL para buscar pela sala com um identificador único (ex: nome)
         const response = await fetch(`${BASE_URL}/salaArcade`);
         const data = await response.json();
         
-        // Supondo que a sala seja a primeira na lista ou usando algum critério específico
-        const room = data[0]; // Modificar conforme a lógica para determinar a sala
-        setRoomId(room.id); // Armazenando o ID da sala
+        const room = data[0]; 
+        setRoomId(room.id); 
         setCharacterName(room.nome || 'Nome');
         setText1(room.texto1 || '');
         setText2(room.texto2 || '');
@@ -47,14 +45,14 @@ export default function Arcade({ route }) {
     };
 
     fetchRoomInfo();
-  }, []); // Remover a dependência de `route.params.id`
+  }, []);
 
   const updateBarValue = (index, change) => {
     setStatusBars(prevBars => {
       const updatedBars = [...prevBars];
       const bar = updatedBars[index];
       const newValue = bar.value + change;
-      bar.value = Math.min(Math.max(0, newValue), bar.maxValue);  // Limita entre 0 e o valor máximo
+      bar.value = Math.min(Math.max(0, newValue), bar.maxValue);
   
       fetch(`${BASE_URL}/salaArcade/${roomId}/barra${bar.id}`, {
         method: 'PUT',
@@ -97,17 +95,14 @@ export default function Arcade({ route }) {
       const updatedBars = [...prevBars];
       const bar = updatedBars[index];
       
-      // Calcula o novo valor máximo sem cair abaixo de 1
       const newMaxValue = Math.max(1, bar.maxValue + change);
       
-      // Se o valor máximo for menor que o valor atual, ajusta o valor atual
       if (newMaxValue < bar.value) {
         bar.value = newMaxValue;
       }
       
       bar.maxValue = newMaxValue;
       
-      // Chama a função de atualização do backend para os valores da barra
       updateBarValues(bar.id, bar.value, bar.maxValue); 
       
       return updatedBars;
@@ -141,7 +136,6 @@ export default function Arcade({ route }) {
 
   const saveRoomInfo = async () => {
     try {
-      // Atualiza o valor das barras se o valor atual for maior que o máximo
       const updatedBars = statusBars.map(bar => {
         const updatedValue = bar.value > bar.maxValue ? bar.maxValue : bar.value;
         return { ...bar, value: updatedValue };
@@ -149,9 +143,9 @@ export default function Arcade({ route }) {
   
       const roomData = {
         nome: newCharName.trim() !== '' ? newCharName : characterName,
-        texto1: newTxt1.trim() !== '' ? newTxt1 : text1,  // Salvando o texto1
-        texto2: newTxt2.trim() !== '' ? newTxt2 : text2,  // Salvando o texto2
-        texto3: newTxt3.trim() !== '' ? newTxt3 : text3,  // Salvando o texto3
+        texto1: newTxt1.trim() !== '' ? newTxt1 : text1,
+        texto2: newTxt2.trim() !== '' ? newTxt2 : text2,
+        texto3: newTxt3.trim() !== '' ? newTxt3 : text3,
         barras: updatedBars.map(bar => ({
           id: bar.id,
           nome: bar.name,
@@ -172,7 +166,6 @@ export default function Arcade({ route }) {
   
       Alert.alert('Informações salvas com sucesso!');
       
-      // Adicionando a mudança para a aba 'Status' após o sucesso
       setActiveTab('Status');
     } catch (error) {
       console.error('Erro ao salvar as informações da sala:', error);
@@ -207,7 +200,7 @@ export default function Arcade({ route }) {
     const updateBarName = (index, newName) => {
       setStatusBars(prevBars => {
         const updatedBars = [...prevBars];
-        updatedBars[index].name = newName; // Atualiza o nome da barra com o novo valor
+        updatedBars[index].name = newName;
         return updatedBars;
       });
     };
@@ -218,7 +211,7 @@ export default function Arcade({ route }) {
           style={styles.input}
           placeholder="Digite o nome da barra"
           value={bar.name}
-          onChangeText={(newName) => updateBarName(index, newName)} // Atualiza o nome da barra
+          onChangeText={(newName) => updateBarName(index, newName)}
         />
        <Text style={styles.barText}> {bar.value}/{bar.maxValue}</Text>
         <View style={styles.buttonsContainer}>
