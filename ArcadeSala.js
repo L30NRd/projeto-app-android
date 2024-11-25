@@ -14,7 +14,7 @@ export default function Arcade({ route }) {
   const [newTxt2, setNewTxt2] = useState('');
   const [text3, setText3] = useState('');
   const [newTxt3, setNewTxt3] = useState('');
-  const [roomId, setRoomId] = useState(null); // Estado para armazenar o ID da sala
+  const [roomId, setRoomId] = useState(null); 
   
 
   useEffect(() => {
