@@ -1,4 +1,0 @@
-npm install uuid
-npm install bcryptjs
-npm install cors
-npm install sqlite3
