@@ -11,12 +11,11 @@ export default function TemplateTeste({ route }) {
   const [isEditing, setIsEditing] = useState(true);
   const [tamimp, setTamimp] = useState(40);
 
-  // Buscar conteúdo salvo ao carregar a tela
   useEffect(() => {
     fetch(`http://192.168.3.5:3000/salasDocs/${salaId}`)
       .then(response => {
         if (response.ok) {
-          return response.json(); // Se a resposta for válida, tenta convertê-la para JSON
+          return response.json();
         } else {
           throw new Error('Erro ao buscar dados do servidor');
         }
@@ -25,11 +24,11 @@ export default function TemplateTeste({ route }) {
         if (data.texto1) setContent1(data.texto1);
         if (data.texto2) {
           setContent2(data.texto2);
-          setTwodoc(true);  // Ativa o switch se content2 existir
+          setTwodoc(true);
         } else {
-          setTwodoc(false); // Desativa o switch se content2 estiver vazio
+          setTwodoc(false);
         }
-        console.log("Dados carregados:", data); // Verifique os dados recebidos
+        console.log("Dados carregados:", data);
       })
       .catch(error => {
         console.error('Erro ao buscar textos:', error);
@@ -46,7 +45,6 @@ export default function TemplateTeste({ route }) {
         setEnviar(true);
         setIsEditing(false);
   
-        // Enviando os dados para o backend
         fetch(`http://192.168.3.5:3000/salasDocs/${salaId}`, {
           method: 'PUT',
           headers: {
@@ -54,7 +52,7 @@ export default function TemplateTeste({ route }) {
           },
           body: JSON.stringify({
             texto1: content1,
-            texto2: twodoc ? content2 : '',  // Envia content2 apenas se twodoc for true
+            texto2: twodoc ? content2 : '',
           }),
         })
         .then(response => response.json())
